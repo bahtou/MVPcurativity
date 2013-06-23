@@ -9,7 +9,24 @@ module.exports = function(app) {
     res.render('signInUp');
   });
 
+  // login
+  app.get('/login', function(req, res) {
+    res.render('login');
+  });
+  app.post('/login', function(req, res) {
+    res.render('home');
+  });
 
+  // Logout
+  // app.get('/logout', mid.checkCookie, mid.checkSession, user.logout);
+
+  // sign Up
+  app.get('/signup', function(req, res) {
+    res.render('signup');
+  });
+  app.post('/signup', function(req, res) {
+    res.redirect('/login');
+  });
 
 
 

@@ -1,0 +1,26 @@
+include includes/head
+
+body.signUp
+  .signUp-form
+    .row
+      .large-6.large-centered.columns
+        form(method="POST", action='/signup')
+          .row
+            .large-10.large-offset-1.columns
+              label.inline(for='username') Username
+              input#username(type='text', name="username", required)
+          .row
+            .large-10.large-offset-1.columns
+              label.inline(for='fullname') Full Name
+              input#fullname(type='text', name='fullname', required)
+          .row
+            .large-10.large-offset-1.columns
+              label.inline(for='email') Email
+              input#email(type='text', name='email', placeholder="we won't spam you", required)
+          .row
+            .large-10.large-offset-1.columns
+              label.inline(for='password') Password
+              input#password(type='password', name='password', placeholder='at least 8 characters', required)
+          .row
+            .large-10.large-offset-1.columns
+              button(type='submit') Register

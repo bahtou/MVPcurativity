@@ -1,9 +1,16 @@
 include includes/head
 body.signInUp
-  .signIn
+  .row
+    .large-6.large-centered.columns
+      .row
+        .large-12.columns
+          div CURATIVITY
+  .login-form
     .row
       .large-6.large-centered.columns
         .row
-          <a href="#" class="button round">Sign In</a>
+          .large-10.large-offset-1.columns
+            a.button.round(href='/login') Log In
         .row
-          <a href="#" class="button round">Sign Up</a>
+          .large-10.large-offset-1.columns
+            a.button.round(href='/signup') Sign Up
