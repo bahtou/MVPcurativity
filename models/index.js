@@ -11,7 +11,7 @@ var mongoose = require( 'mongoose' )
       cura: 'mongodb://localhost:27017/CURA?safe=true'
     };
     cura = mongoose.createConnection(mongo.cura),
-    console.log('connected to Mongo@localhost:27017/CURA');
+    console.log('connected to Mongo@localhost:' +cura.port +'/CURA');
   }
 
 // General Models

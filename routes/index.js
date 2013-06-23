@@ -4,22 +4,37 @@ var mid = require('../middleware').middle
 
 module.exports = function(app) {
 
-  // Signup splash page
+  // signInUp
   app.get('/', function(req, res) {
-    var errors = req.flash('errors');
-    var email = req.flash('email');
-    res.render('index', {
-      email: email.length !== 0 ? email : '',
-      errors: errors.length !== 0 ? errors : ''
-    });
+    res.render('signInUp');
   });
 
-  // Signup post
-  app.post('/signup', mid.validate, signup.insert);
 
-  // Signup success
-  app.get('/success', function(req, res) {
-    res.render('success');
-  });
+
+
+
+
+
+
+
+
+
+  // // Signup splash page
+  // app.get('/', function(req, res) {
+  //   var errors = req.flash('errors');
+  //   var email = req.flash('email');
+  //   res.render('index', {
+  //     email: email.length !== 0 ? email : '',
+  //     errors: errors.length !== 0 ? errors : ''
+  //   });
+  // });
+
+  // // Signup post
+  // app.post('/signup', mid.validate, signup.insert);
+
+  // // Signup success
+  // app.get('/success', function(req, res) {
+  //   res.render('success');
+  // });
 
 };
