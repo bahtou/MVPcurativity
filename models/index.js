@@ -1,18 +1,23 @@
 var mongoose = require( 'mongoose' )
-  , env, signUp;
+  , env, curativity, curaPass;
   if (process.env.VCAP_SERVICES) {
     env = JSON.parse(process.env.VCAP_SERVICES);
     db1 = env['mongodb-1.8'][0].credentials;
-    cura = mongoose.createConnection(db1.url);
+    curativity = mongoose.createConnection(db1.url);
     console.log('connected to Mongo');
   }
   else {
     var mongo = {
-      cura: 'mongodb://localhost:27017/CURA?safe=true'
+      curativity: 'mongodb://localhost:27017/CURATIVITY?safe=true',
+      curaPass: 'mongodb://localhost:27017/CURAPASS?safe=true'
     };
-    cura = mongoose.createConnection(mongo.cura),
-    console.log('connected to Mongo@localhost:' +cura.port +'/CURA');
+    curativity = mongoose.createConnection(mongo.curativity);
+    curaPass = mongoose.createConnection(mongo.curaPass);
+    for (var key in mongo) {
+      console.log(mongo[key]);
+    }
   }
 
-// General Models
-module.exports.SignUps = cura.model('signup', require('./schemas/signUp'));
+// Curativity Models
+module.exports.Accounts = curativity.model('accounts', require('./schemas/account'));
+module.exports.Passwords = curaPass.model('passwords', require('./schemas/password'));

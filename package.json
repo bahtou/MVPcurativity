@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "author": {
-    "name": "Roberto",
+    "name": "Roberto Fuentes",
     "email": "Roberto@curativity.co"
   },
   "scripts": {
@@ -13,18 +13,22 @@
     "express": "3.1.0",
     "jade": "*",
     "mongoose": "3.6.11",
+    "moment": "2.0.0",
+    "connect-flash": "~0.1.1",
     "express-validator": "0.3.2",
-    "connect-flash": "~0.1.1"
+    "emailjs": "0.3.4",
+    "stylus": "0.32.1"
   },
   "repository": {
     "type": "git",
-    "url": "https://bitbucket.org/apesystem/curativity"
+    "url": "https://github.com/bahtou/MVPcurativity"
   },
   "engines": {
-    "node": "0.10.0"
+    "node": "0.10.9",
+    "npm": "1.1.24"
   },
   "bugs": {
     "mail": "Roberto@curativity.co",
-    "url": "https://bitbucket.org/apesystem/curativity/issues"
+    "url": "https://github.com/bahtou/MVPcurativity/issues"
   }
 }

@@ -19,10 +19,9 @@ app.configure(function(){
   app.use(express.cookieParser('create'));
   app.use(express.cookieSession({
     key: 'create',
-    secret: 'curateThis',
+    secret: 'create_$@$_curativity_$@$_curate',
     cookie: {maxAge: 1*24*60*60*1000}
   }));
-
   // cache every file going out
   app.use(function(req, res, next) {
     if (!res.getHeader('Cache-Control')) {
@@ -30,7 +29,6 @@ app.configure(function(){
     }
     next();
   });
-
   // Expose the flash function to the view layer
   app.use(require('connect-flash')());
   app.use(function(req, res, next) {
@@ -39,6 +37,7 @@ app.configure(function(){
   });
 
   app.use(app.router);
+  app.use(require('stylus').middleware({src:__dirname + '/public'}));
   app.use(express.static(path.join(__dirname, 'public')));
 });
 
