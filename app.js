@@ -16,11 +16,11 @@ app.configure(function(){
   app.use(express.bodyParser());
   app.use(express.methodOverride());
   app.use(expressValidator);
-  app.use(express.cookieParser('create'));
+  app.use(express.cookieParser('__RequestValidationToken'));
   app.use(express.cookieSession({
-    key: 'create',
+    key: '__RequestValidationToken',
     secret: 'create_$@$_curativity_$@$_curate',
-    cookie: {maxAge: 1*24*60*60*1000}
+    cookie: {httpOnly: true, expires: 0, path: '/'}
   }));
   // cache every file going out
   app.use(function(req, res, next) {

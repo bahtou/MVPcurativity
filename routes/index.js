@@ -17,9 +17,9 @@ module.exports = function(app) {
       });
     } else {
       // attempt automatic login //
-      AM.autoLogin(req.cookies.user, req.cookies.pass, function(o) {
-        if (o !== null) {
-          req.session.user = o;
+      AM.autoLogin(req.cookies.user, req.cookies.pass, function(user) {
+        if (user !== null) {
+          req.session.user = user;
           res.redirect('/home');
         } else {
           res.render('login', {
@@ -32,14 +32,14 @@ module.exports = function(app) {
 
   // post login
   app.post('/', function(req, res) {
-    AM.manualLogin(req.param('user'), req.param('pass'), function(e, o) {
+    AM.manualLogin(req.param('username'), req.param('pass'), function(err, o) {
       if (!o) {
-        res.send(e, 400);
+        res.send(err, 400);
       } else {
         req.session.user = o;
       if (req.param('remember-me') == 'true') {
-        res.cookie('user', o.user, {maxAge: 900000});
-        res.cookie('pass', o.pass, {maxAge: 900000});
+        res.cookie('user', o.username, {signed: true, httpOnly: true, path: '/'});
+        res.cookie('pass', o.password, {signed: true, httpOnly: true, path: '/'});
       }
       res.send(o, 200);
       }
@@ -61,30 +61,30 @@ module.exports = function(app) {
   });
 
   app.post('/home', function(req, res){
-    if (req.param('user') !== undefined) {
+    if (req.param('username') !== undefined) {
       AM.updateAccount({
-        user    : req.param('user'),
+        username    : req.param('username'),
         name    : req.param('name'),
         email     : req.param('email'),
         country   : req.param('country'),
         pass    : req.param('pass')
-      }, function(e, o){
-        if (e){
+      }, function(err, o) {
+        if (err) {
           res.send('error-updating-account', 400);
-        } else{
+        } else {
           req.session.user = o;
       // update the user's login cookies if they exists //
-          if (req.cookies.user !== undefined && req.cookies.pass !== undefined){
-            res.cookie('user', o.user, { maxAge: 900000 });
-            res.cookie('pass', o.pass, { maxAge: 900000 }); 
+          if (req.cookies.user !== undefined && req.cookies.pass !== undefined) {
+            res.cookie('user', o.username, {signed: true, httpOnly: true, path: '/'});
+            res.cookie('pass', o.password, {signed: true, httpOnly: true, path: '/'});
           }
           res.send('ok', 200);
         }
       });
-    } else if (req.param('logout') == 'true'){
+    } else if (req.param('logout') == 'true') {
       res.clearCookie('user');
       res.clearCookie('pass');
-      req.session.destroy(function(e){ res.send('ok', 200); });
+      req.session.destroy(function(e) { res.send('ok', 200); });
     }
   });
 
@@ -97,12 +97,12 @@ module.exports = function(app) {
     AM.addNewAccount({
       name  : req.param('name'),
       email   : req.param('email'),
-      user  : req.param('user'),
+      username  : req.param('username'),
       pass  : req.param('pass'),
       country : req.param('country')
-    }, function(e){
-      if (e){
-        res.send(e, 400);
+    }, function(err){
+      if (err){
+        res.send(err, 400);
       } else{
         res.send('ok', 200);
       }
@@ -152,9 +152,9 @@ module.exports = function(app) {
     // destory the session immediately after retrieving the stored email //
     req.session.destroy();
     AM.updatePassword(email, nPass, function(e, o){
-      if (o){
+      if (o) {
         res.send('ok', 200);
-      } else{
+      } else {
         res.send('unable to update password', 400);
       }
     });
