@@ -1,14 +1,12 @@
 extends layout
 
 block content
-  include account
-  include modals/alert
+  include modals/reset-password
 
 block scripts
   script(src='/vendor/jquery.min.js')
   script(src='/vendor/jquery.form.js')
   script(src='/vendor/bootstrap-modal.js')
   script(src='/vendor/bootstrap-transition.js')
-  script(src='/_js/views/signup.js')
-  script(src='/_js/controllers/signupController.js')
-  script(src='/_js/form-validators/accountValidator.js')
+  script(src='/_js/views/reset.js')
+  script(src='/_js/form-validators/resetValidator.js')

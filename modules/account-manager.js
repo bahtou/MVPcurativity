@@ -119,10 +119,17 @@ exports.getAccountByEmail = function(email, callback)
   accounts.findOne({email:email}, function(e, o){ callback(o); });
 };
 
+// NOTE: must test '!user'
 exports.validateResetLink = function(email, passHash, callback)
 {
-  accounts.find({ $and: [{email:email, pass:passHash}] }, function(e, o){
-    callback(o ? 'ok' : null);
+  Accounts.findOne({email: email}, function(err, user) {
+    if (err) {
+        res.send(err, 400);
+      } else if (user) {
+      Passwords.findOne({password: passHash}, function(err, passUser) {
+        callback(passUser ? 'ok' : null);
+      });
+    }
   });
 };
 

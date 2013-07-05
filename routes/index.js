@@ -93,24 +93,24 @@ module.exports = function(app) {
     res.render('signup', {  title: 'Signup', countries : CT });
   });
 
-  app.post('/signup', function(req, res){
+  app.post('/signup', function(req, res) {
     AM.addNewAccount({
       name  : req.param('name'),
       email   : req.param('email'),
       username  : req.param('username'),
       pass  : req.param('pass'),
       country : req.param('country')
-    }, function(err){
-      if (err){
+    }, function(err) {
+      if (err) {
         res.send(err, 400);
-      } else{
+      } else {
         res.send('ok', 200);
       }
     });
   });
 
   // password reset //
-  app.post('/lost-password', function(req, res){
+  app.post('/lost-password', function(req, res) {
     // look up the user's account via their email //
       AM.getAccountByEmail(req.param('email'), function(o){
         if (o){
@@ -134,8 +134,8 @@ module.exports = function(app) {
   app.get('/reset-password', function(req, res) {
     var email = req.query["e"];
     var passH = req.query["p"];
-    AM.validateResetLink(email, passH, function(e){
-      if (e != 'ok'){
+    AM.validateResetLink(email, passH, function(err){
+      if (err != 'ok'){
         res.redirect('/');
       } else {
         // save the user's email in a session instead of sending to the client //
