@@ -22,12 +22,12 @@ EM.dispatchResetPasswordLink = function(account, callback)
   }, callback );
 };
 
-EM.composeEmail = function(o)
+EM.composeEmail = function(acct)
 {
-  var link = 'http://node-login.braitsch.io/reset-password?e='+o.email+'&p='+o.pass;
+  var link = 'http://node-login.braitsch.io/reset-password?e='+acct.email+'&p='+acct.pass;
   var html = "<html><body>";
-    html += "Hi "+o.name+",<br><br>";
-    html += "Your username is :: <b>"+o.user+"</b><br><br>";
+    html += "Hi "+acct.name+",<br><br>";
+    html += "Your username is :: <b>"+acct.user+"</b><br><br>";
     html += "<a href='"+link+"'>Please click here to reset your password</a><br><br>";
     html += "Cheers,<br>";
     html += "<a href='http://twitter.com/braitsch'>braitsch</a><br><br>";
