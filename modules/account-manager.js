@@ -124,11 +124,15 @@ exports.validateResetLink = function(email, passHash, callback)
 {
   Accounts.findOne({email: email}, function(err, user) {
     if (err) {
-        res.send(err, 400);
-      } else if (user) {
-      Passwords.findOne({password: passHash}, function(err, passUser) {
+        console.log('validateResetLink: Error', err);
+        return res.send(err, 400);
+      }
+    if (user) {
+      Passwords.findOne({username: user.username, password: passHash}, function(err, passUser) {
         callback(passUser ? 'ok' : null);
       });
+    } else {
+        return callback('no');
     }
   });
 };

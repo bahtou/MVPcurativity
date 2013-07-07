@@ -139,7 +139,7 @@ module.exports = function(app) {
         res.redirect('/');
       } else {
         // save the user's email in a session instead of sending to the client //
-        req.session.reset = { email:email, passHash:passH };
+        req.session.reset = { email:email, passHash: passH };
         res.render('reset', { title : 'Reset Password' });
       }
     });
