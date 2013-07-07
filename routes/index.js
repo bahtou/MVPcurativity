@@ -112,20 +112,20 @@ module.exports = function(app) {
   // password reset //
   app.post('/lost-password', function(req, res) {
     // look up the user's account via their email //
-      AM.getAccountByEmail(req.param('email'), function(o){
-        if (o){
+      AM.getAccountByEmail(req.param('email'), function(user) {
+        if (user) {
           res.send('ok', 200);
-          EM.dispatchResetPasswordLink(o, function(e, m){
+          EM.dispatchResetPasswordLink(user, function(err, m) {
           // this callback takes a moment to return //
           // should add an ajax loader to give user feedback //
-            if (!e) {
-            //  res.send('ok', 200);
-            } else{
+            if (!err) {
+              res.send('ok', 200);
+            } else {
               res.send('email-server-error', 400);
-              for (var k in e) console.log('error : ', k, e[k]);
+              for (var k in err) console.log('error : ', k, err[k]);
             }
           });
-        } else{
+        } else {
           res.send('email-not-found', 400);
         }
       });
@@ -151,7 +151,7 @@ module.exports = function(app) {
     var email = req.session.reset.email;
     // destory the session immediately after retrieving the stored email //
     req.session.destroy();
-    AM.updatePassword(email, nPass, function(e, o){
+    AM.updatePassword(email, nPass, function(err, o) {
       if (o) {
         res.send('ok', 200);
       } else {
@@ -162,21 +162,24 @@ module.exports = function(app) {
 
   // view & delete accounts //
   app.get('/print', function(req, res) {
-    AM.getAllRecords( function(e, accounts){
+    AM.getAllRecords( function(err, accounts) {
+      //TODO: take care of error
       res.render('print', { title : 'Account List', accts : accounts });
     });
   });
 
-  app.post('/delete', function(req, res){
-    AM.deleteAccount(req.body.id, function(e, obj){
-      if (!e){
+  app.post('/delete', function(req, res) {
+    AM.deleteAccount(req.body.id, function(err, obj) {
+      if (!err) {
         res.clearCookie('user');
         res.clearCookie('pass');
-              req.session.destroy(function(e){ res.send('ok', 200); });
-      } else{
+              req.session.destroy(function(err) {
+                res.send('ok', 200);
+              });
+      } else {
         res.send('record not found', 400);
       }
-      });
+    });
   });
 
   app.get('/reset', function(req, res) {

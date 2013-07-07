@@ -111,12 +111,19 @@ exports.updatePassword = function(email, newPass, callback)
 
 exports.deleteAccount = function(id, callback)
 {
-  accounts.remove({_id: getObjectId(id)}, callback);
+  Accounts.findByIdAndRemove({_id: getObjectId(id)}, callback);
 };
 
 exports.getAccountByEmail = function(email, callback)
 {
-  accounts.findOne({email:email}, function(e, o){ callback(o); });
+  accounts.findOne({email:email}, function(err, user) {
+    if (err) {
+      console.log('getAccountByEmail():Error', err);
+      throw err;
+    } else {
+      callback(user);
+    }
+  });
 };
 
 // NOTE: must test '!user'
@@ -139,16 +146,16 @@ exports.validateResetLink = function(email, passHash, callback)
 
 exports.getAllRecords = function(callback)
 {
-  accounts.find().toArray(
-    function(e, res) {
-    if (e) callback(e);
+  Accounts.find().toArray(
+    function(err, res) {
+    if (err) callback(err);
     else callback(null, res);
   });
 };
 
 exports.delAllRecords = function(callback)
 {
-  accounts.remove({}, callback); // reset accounts collection for testing //
+  Accounts.remove({}, callback); // reset accounts collection for testing //
 };
 
 /* private encryption & validation methods */
@@ -190,9 +197,9 @@ var getObjectId = function(id)
 
 var findById = function(id, callback)
 {
-  accounts.findOne({_id: getObjectId(id)},
-    function(e, res) {
-    if (e) callback(e);
+  Accounts.findById({_id: getObjectId(id)},
+    function(err, res) {
+    if (err) callback(err);
     else callback(null, res);
   });
 };
@@ -201,9 +208,9 @@ var findById = function(id, callback)
 var findByMultipleFields = function(a, callback)
 {
 // this takes an array of name/val pairs to search against {fieldName : 'value'} //
-  accounts.find( { $or : a } ).toArray(
-    function(e, results) {
-    if (e) callback(e);
-    else callback(null, results);
+  Accounts.find( { $or : a } ).toArray(
+    function(err, res) {
+    if (err) callback(err);
+    else callback(null, res);
   });
 };
